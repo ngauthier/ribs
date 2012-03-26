@@ -1,0 +1,11 @@
+{
+  "name" : "ribs",
+  "description" : "a collection of useful extensions to Backbone",
+  "dependencies" : {
+    "coffee-script" : "1.2.0",
+    "backbone" : ">= 0.9.2"
+  },
+  "lib" : ".",
+  "main": "ribs.js",
+  "version": "0.0.1"
+}
