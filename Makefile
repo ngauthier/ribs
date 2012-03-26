@@ -1,20 +1,13 @@
-NPM_EXECUTABLE_HOME := node_modules/.bin
+PATH := node_modules/.bin:${PATH}
 
-PATH := ${NPM_EXECUTABLE_HOME}:${PATH}
+all: ribs.js
 
-test: deps
+ribs.js: src/ribs.coffee
+	@find src -name '*.coffee' | xargs coffee -c -o .
+
+.PHONY : test
+test: 
 	@find test -name '*_test.coffee' | xargs -n 1 -t coffee
 
-dev: generate-js
-	@coffee -wc --bare -o lib src/*.coffee
-
-generate-js:
-	@find src -name '*.coffee' | xargs coffee -c -o lib
-
-remove-js:
-	@rm -fr lib/
-
-deps:
-
-.PHONY: all
-
+clean:
+	@rm ribs.js
