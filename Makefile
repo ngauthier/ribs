@@ -1,13 +1,16 @@
 PATH := node_modules/.bin:${PATH}
+VPATH = src
 
-all: ribs.js
-
-ribs.js: src/ribs.coffee
+ribs.js: ribs.coffee
 	@find src -name '*.coffee' | xargs coffee -c -o .
 
 .PHONY : test
-test: 
+test: npm
 	@find test -name '*_test.coffee' | xargs -n 1 -t coffee
 
+.PHONY : clean
 clean:
 	@rm ribs.js
+
+npm: package.json
+	npm install
