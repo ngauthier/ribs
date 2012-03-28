@@ -2,8 +2,10 @@
   "name" : "ribs",
   "description" : "a collection of useful extensions to Backbone",
   "dependencies" : {
-    "coffee-script" : "1.2.0",
     "backbone" : ">= 0.9.2"
+  },
+  "devDependencies" : {
+    "underscore" : ">0"
   },
   "lib" : ".",
   "main": "ribs.js",
