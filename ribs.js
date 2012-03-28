@@ -15,4 +15,14 @@
     }
   });
 
+  Ribs.ReducedCollection = Backbone.Collection.extend({
+    initialize: function(models, options) {
+      this.collection = options.collection;
+      return this.collection.on('all', this.update, this);
+    },
+    update: function() {
+      return this.reset(this.reduce(this.collection));
+    }
+  });
+
 }).call(this);

@@ -65,7 +65,7 @@ TestSuite.prototype = {
   },
   statusReport: function(result) {
     if (result.passed()) {
-      process.stdout.write('.')
+      process.stdout.write(this.green('.'))
     } else {
       if (result.failure()) {
         process.stdout.write(this.yellow('F'))
