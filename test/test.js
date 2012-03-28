@@ -94,6 +94,7 @@ TestSuite.prototype = {
     process.stdout.write(this.yellow(failed.length+" Fail  "))
     process.stdout.write(this.red(errored.length+" Error  "))
     process.stdout.write(this.results.length+" Total")
+    process.stdout.write("\n")
   },
   reportError: function(result) {
     if (!result.passed()) {
