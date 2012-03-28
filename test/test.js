@@ -21,6 +21,9 @@ TestResult.prototype = {
   failure: function() {
     return this._exception && this._exception.name === 'AssertionError'
   },
+  error: function() {
+    return !this.passed() && !this.failure()
+  },
   passed: function() {
     return this._passed
   }
@@ -49,6 +52,7 @@ var TestSuite = function(files) {
 }
 TestSuite.prototype = {
   run: function() {
+    console.time('Suite')
     _(this.files).chain().map(function(file) {
       return new TestCase(file)
     }).each(this.runTestCase, this)
@@ -64,20 +68,47 @@ TestSuite.prototype = {
       process.stdout.write('.')
     } else {
       if (result.failure()) {
-        process.stdout.write('F')
+        process.stdout.write(this.yellow('F'))
       } else {
-        process.stdout.write('E')
+        process.stdout.write(this.red('E'))
       }
     }
   },
   finalReport: function() {
+    var passed = _(this.results).select(function(r) {
+      return r.passed()
+    })
+    var failed = _(this.results).select(function(r) {
+      return r.failure()
+    })
+    var errored = _(this.results).select(function(r) {
+      return r.error()
+    })
+
     process.stdout.write("\n")
+    console.timeEnd('Suite')
     _(this.results).each(this.reportError, this)
+
+    process.stdout.write("\n")
+    process.stdout.write(this.green(passed.length+" Pass  "))
+    process.stdout.write(this.yellow(failed.length+" Fail  "))
+    process.stdout.write(this.red(errored.length+" Error  "))
+    process.stdout.write(this.results.length+" Total")
   },
   reportError: function(result) {
     if (!result.passed()) {
-      process.stdout.write("\n" + result.file() + ": " + result.stack() + "\n")
+      var method = result.failure() ? this.yellow : this.red
+      process.stdout.write(method("\n" + result.file() + ": " + result.stack() + "\n"))
     }
+  },
+  green: function(s) {
+    return "\033[0;32m"+s+"\033[0m"
+  },
+  yellow: function(s) {
+    return "\033[0;33m"+s+"\033[0m"
+  },
+  red: function(s) {
+    return "\033[0;31m"+s+"\033[0m"
   }
 }
 
